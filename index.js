@@ -1,9 +1,3 @@
-let question = document.getElementsByClassName("question");
-let option1 = document.getElementsByClassName("option1");
-let option2 = document.getElementsByClassName("option2");
-let option3 = document.getElementsByClassName("option3");
-let option4 = document.getElementsByClassName("option4");
-
 // Number generator
 function numberGenerator(generateNoUpto) {
     let random = Math.floor(Math.random() * generateNoUpto + 1);
@@ -111,11 +105,29 @@ let data = {
     corrOption: [],
 }
 
-// console logs
-for(let i=0; i<10; i++){
-questionGenerator(1, 100);
 
-console.log("Question:",i, data.question[i]);
-console.log("Answer: ", eval(data.question[i]));
-console.log("Options: ", data.opt[i]);
-};
+let counter = -1;
+
+function clicked() {
+    counter += 1;
+    questionGenerator(1, 100);
+    document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
+    document.getElementById("option1").innerHTML = "(a). " + data.opt[counter][0];
+    document.getElementById("option2").innerHTML = "(b). " + data.opt[counter][1];
+    document.getElementById("option3").innerHTML = "(c). " + data.opt[counter][2];
+    document.getElementById("option4").innerHTML = "(d). " + data.opt[counter][3];
+
+    // console logs
+    console.log("Question:", (counter+1), data.question[counter]);
+    console.log("Answer: ", eval(data.question[counter]));
+    console.log("Options: ", data.opt);
+
+    if (counter > 8) {
+        counter = -1;
+        data.question = [];
+        data.opt = [];
+    }
+}
+
+
+
