@@ -17,6 +17,14 @@ function operatorGenerator() {
     return operand[random];
 }
 
+// questionGenerator function arguments
+// x: how many operator we need in equation
+// y: number upto which operand number must be
+// n: if we need same type of operator or random operators
+//    n = either (1 or 0) or (true or false) 1 or true for same operator
+// 0: if "n" is true then it take operator which we want such as "+", "-", "*", "/"
+// example: questionGenerator(2, 455, true, "*");
+
 
 // Question generator
 function questionGenerator(x, y, n, o) {
