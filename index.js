@@ -16,7 +16,7 @@ function operatorGenerator() {
 // y: number upto which operand number must be
 // n: if we need same type of operator or random operators
 //    n = either (1 or 0) or (true or false) 1 or true for same operator
-// 0: if "n" is true then it take operator which we want such as "+", "-", "*", "/"
+// o: if "n" is true then it take operator which we want such as "+", "-", "*", "/"
 // example: questionGenerator(2, 455, true, "*");
 
 
@@ -89,11 +89,10 @@ function questionGenerator(x, y, n, o) {
         }
     }
 
-
     // sending questions and options to object
     data.question.push(q);
-    data.opt.push(option);
-    data.corrOption.push(corr);
+    data.option.push(option);
+    data.correctOption.push(corr);
 }
 
 
@@ -101,33 +100,82 @@ function questionGenerator(x, y, n, o) {
 let data = {
     level: "",
     question: [],
-    opt: [],
-    corrOption: [],
+    option: [],
+    correctOption: [],
+    choosenOption: []
 }
 
 
+let score = 0;
+let percentScore = 0;
 let counter = -1;
+let chsnOptCounter = -1;
 
-function clicked() {
+
+function render(clicked) {
     counter += 1;
     questionGenerator(1, 100);
     document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
-    document.getElementById("option1").innerHTML = "(a). " + data.opt[counter][0];
-    document.getElementById("option2").innerHTML = "(b). " + data.opt[counter][1];
-    document.getElementById("option3").innerHTML = "(c). " + data.opt[counter][2];
-    document.getElementById("option4").innerHTML = "(d). " + data.opt[counter][3];
+    document.getElementById("0").innerHTML = "(a). " + data.option[counter][0];
+    document.getElementById("1").innerHTML = "(b). " + data.option[counter][1];
+    document.getElementById("2").innerHTML = "(c). " + data.option[counter][2];
+    document.getElementById("3").innerHTML = "(d). " + data.option[counter][3];
+
+
+
+    if (clicked) {
+        chsnOptCounter += 1;
+        data.choosenOption.push(clicked);
+    }
 
     // console logs
-    console.log("Question:", (counter+1), data.question[counter]);
+    console.log("Question:", (counter + 1), data.question[counter]);
     console.log("Answer: ", eval(data.question[counter]));
-    console.log("Options: ", data.opt);
+    console.log("Options: ", data.option);
+    console.log("correct options", data.correctOption);
+    console.log("choosen option", data.choosenOption);
+
+
+    if (counter === 9) {
+        for (let i = 0; i <= counter; i++) {
+            document.getElementById("q" + i).innerHTML = data.question[i];
+            document.getElementById(i + "0").innerHTML = data.option[i][0];
+            document.getElementById(i + "1").innerHTML = data.option[i][1];
+            document.getElementById(i + "2").innerHTML = data.option[i][2];
+            document.getElementById(i + "3").innerHTML = data.option[i][3];
+
+        }
+    }
+
+
+    
+
+if (data.choosenOption.length == 9) {
+    for (let i = 0; i < 9; i++) {
+        if (data.option[i][data.correctOption[i]] == data.option[i][data.choosenOption[i]]) {
+            score += 10;
+            percentScore = (score/100)*100;
+            console.log("score: ",score);
+            console.log("percent: ", percentScore);
+        }
+        
+    }
+}
+
 
     if (counter > 8) {
         counter = -1;
         data.question = [];
-        data.opt = [];
-    }
-}
+        data.option = [];
+        data.correctOption = [];
+    };
 
+    if (chsnOptCounter > 8) {
+        chsnOptCounter = -1;
+        data.choosenOption = [];
+    }
+
+
+}
 
 
