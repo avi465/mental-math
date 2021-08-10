@@ -108,8 +108,8 @@ let data = {
 // Dom manipulations
 let score = 0;
 let percentScore = 0;
-let counter = -1;
-let chsnOptCounter = -1;
+let counter = 0;
+let pressCounter = 0;
 
 //on loading function
 window.onload = load;
@@ -137,55 +137,81 @@ function start() {
     render();
 }
 
-function render(clicked) {
-    counter += 1;
-    questionGenerator(1, 100);
-    document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
-    document.getElementById("0").innerHTML = "(a). " + data.option[counter][0];
-    document.getElementById("1").innerHTML = "(b). " + data.option[counter][1];
-    document.getElementById("2").innerHTML = "(c). " + data.option[counter][2];
-    document.getElementById("3").innerHTML = "(d). " + data.option[counter][3];
+// Warning: This function is recursive so we have to fix that
+function render() {
+    pressCounter += 1;
+    if (counter < 9) {
+        questionGenerator(1, 100);
+        document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
+        document.getElementById("0").innerHTML = "(a). " + data.option[counter][0];
+        document.getElementById("1").innerHTML = "(b). " + data.option[counter][1];
+        document.getElementById("2").innerHTML = "(c). " + data.option[counter][2];
+        document.getElementById("3").innerHTML = "(d). " + data.option[counter][3];
+        caller();
+        counter += 1;
+    } else if (counter === 9) {
+        questionGenerator(1, 100);
+        document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
+        document.getElementById("0").innerHTML = "(a). " + data.option[counter][0];
+        document.getElementById("1").innerHTML = "(b). " + data.option[counter][1];
+        document.getElementById("2").innerHTML = "(c). " + data.option[counter][2];
+        document.getElementById("3").innerHTML = "(d). " + data.option[counter][3];
+        counter = 0;
+        setTimeout(() => {
+            document.getElementById("landing").style.display = "none";
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "initial";
+        }, 10000);
 
-    // if (clicked) {
-    //     chsnOptCounter += 1;
-    //     data.choosenOption.push(clicked);
-    // }
-
+    }
     // console logs
-    console.log("Question:", (counter + 1), data.question[counter]);
-    console.log("Answer: ", eval(data.question[counter]));
+    console.log("Question:", (counter), data.question[counter - 1]);
+    console.log("Answer: ", eval(data.question[counter - 1]));
     console.log("Options: ", data.option);
     console.log("correct options", data.correctOption);
     console.log("choosen option", data.choosenOption);
 
-    // if (counter === 9) {
-    //     for (let i = 0; i <= counter; i++) {
-    //         document.getElementById("q" + i).innerHTML = data.question[i];
-    //         document.getElementById(i + "0").innerHTML = data.option[i][0];
-    //         document.getElementById(i + "1").innerHTML = data.option[i][1];
-    //         document.getElementById(i + "2").innerHTML = data.option[i][2];
-    //         document.getElementById(i + "3").innerHTML = data.option[i][3];
+}
 
-    //     }
-    // }
+let interval;
+function caller() {
+    interval = setTimeout(() => {
+        render();
+    }, 10000);
+}
 
-// if (data.choosenOption.length == 9) {
-//     for (let i = 0; i < 9; i++) {
-//         if (data.option[i][data.correctOption[i]] == data.option[i][data.choosenOption[i]]) {
-//             score += 10;
-//             percentScore = (score/100)*100;
-//             console.log("score: ",score);
-//             console.log("percent: ", percentScore);
-//         }
-        
-//     }
-// }
-
-    // if (counter > 8) {
-    //     counter = -1;
-    //     data.question = [];
-    //     data.option = [];
-    //     data.correctOption = [];
-    // };
-
+function optionButtonClick(click) {
+    if (pressCounter < 10) {
+        if (data.option[pressCounter - 1][data.correctOption[pressCounter - 1]] == data.option[pressCounter - 1][click]) {
+            document.getElementById(click).style.backgroundColor = "green"
+            document.getElementById(click).style.color = "white"
+        } else {
+            document.getElementById(click).style.backgroundColor = "red"
+            document.getElementById(click).style.color = "white"
+        }
+    } else if (pressCounter === 10) {
+        if (data.option[pressCounter - 1][data.correctOption[pressCounter - 1]] == data.option[pressCounter - 1][click]) {
+            document.getElementById(click).style.backgroundColor = "green"
+            document.getElementById(click).style.color = "white"
+        } else {
+            document.getElementById(click).style.backgroundColor = "red"
+            document.getElementById(click).style.color = "white"
+        }
+        setTimeout(() => {
+            document.getElementById(click).style.backgroundColor = "initial"
+            document.getElementById(click).style.color = "initial"
+        }, 200);
+        pressCounter = 0;
+        document.getElementById("landing").style.display = "none";
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("result").style.display = "initial";
+    }
+    setTimeout(() => {
+        clearInterval(interval);
+        render();
+        document.getElementById(click).style.backgroundColor = "initial"
+        document.getElementById(click).style.color = "initial"
+    }, 200);
 }
