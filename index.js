@@ -147,8 +147,8 @@ function render() {
         document.getElementById("1").innerHTML = "(b). " + data.option[counter][1];
         document.getElementById("2").innerHTML = "(c). " + data.option[counter][2];
         document.getElementById("3").innerHTML = "(d). " + data.option[counter][3];
-        caller();
         counter += 1;
+        caller();
     } else if (counter === 9) {
         questionGenerator(1, 100);
         document.getElementById("question").innerHTML = "Q" + (counter + 1) + ". What is value of " + data.question[counter];
@@ -190,6 +190,13 @@ function optionButtonClick(click) {
             document.getElementById(click).style.backgroundColor = "red"
             document.getElementById(click).style.color = "white"
         }
+
+        setTimeout(() => {
+            clearInterval(interval);
+            render();
+            document.getElementById(click).style.backgroundColor = "initial"
+            document.getElementById(click).style.color = "initial"
+        }, 200);
     } else if (pressCounter === 10) {
         if (data.option[pressCounter - 1][data.correctOption[pressCounter - 1]] == data.option[pressCounter - 1][click]) {
             document.getElementById(click).style.backgroundColor = "green"
@@ -201,17 +208,13 @@ function optionButtonClick(click) {
         setTimeout(() => {
             document.getElementById(click).style.backgroundColor = "initial"
             document.getElementById(click).style.color = "initial"
+
+            document.getElementById("landing").style.display = "none";
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "initial";
         }, 200);
         pressCounter = 0;
-        document.getElementById("landing").style.display = "none";
-        document.getElementById("menu").style.display = "none";
-        document.getElementById("quiz").style.display = "none";
-        document.getElementById("result").style.display = "initial";
     }
-    setTimeout(() => {
-        clearInterval(interval);
-        render();
-        document.getElementById(click).style.backgroundColor = "initial"
-        document.getElementById(click).style.color = "initial"
-    }, 200);
+
 }
