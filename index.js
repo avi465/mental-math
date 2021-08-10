@@ -186,6 +186,7 @@ function optionButtonClick(click) {
         if (data.option[pressCounter - 1][data.correctOption[pressCounter - 1]] == data.option[pressCounter - 1][click]) {
             document.getElementById(click).style.backgroundColor = "green"
             document.getElementById(click).style.color = "white"
+            score += 10;
         } else {
             document.getElementById(click).style.backgroundColor = "red"
             document.getElementById(click).style.color = "white"
@@ -201,6 +202,7 @@ function optionButtonClick(click) {
         if (data.option[pressCounter - 1][data.correctOption[pressCounter - 1]] == data.option[pressCounter - 1][click]) {
             document.getElementById(click).style.backgroundColor = "green"
             document.getElementById(click).style.color = "white"
+            score += 10;
         } else {
             document.getElementById(click).style.backgroundColor = "red"
             document.getElementById(click).style.color = "white"
@@ -213,8 +215,16 @@ function optionButtonClick(click) {
             document.getElementById("menu").style.display = "none";
             document.getElementById("quiz").style.display = "none";
             document.getElementById("result").style.display = "initial";
+            resultPage();
         }, 200);
         pressCounter = 0;
     }
 
+}
+
+function resultPage() {
+    document.getElementById("correct").innerHTML = "Correct: " + (score/10);
+    document.getElementById("incorrect").innerHTML = "InCorrect: " + (10-(score/10));
+    document.getElementById("score").innerHTML = "score: " + score;
+    document.getElementById("percentScore").innerHTML = "You were " + score + "% accurate";
 }
